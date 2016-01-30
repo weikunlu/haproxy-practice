@@ -1,0 +1,32 @@
+weba:
+    build: ./web
+    expose:
+        - 80
+
+webb:
+    build: ./web
+    expose:
+        - 80
+
+webc:
+    build: ./web
+    expose:
+        - 80
+
+haproxy:
+    image: haproxy:latest
+    volumes:
+        - ./haproxy:/haproxy-override
+        - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    links:
+        - weba
+        - webb
+        - webc
+    external_links:
+        - java-1
+    ports:
+        - "8880:80"
+        - "1936:1936"
+    expose:
+        - "80"
+        - "1936"
